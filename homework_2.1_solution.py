@@ -55,9 +55,10 @@ with open('cook_book.txt') as f:
         count_line = f.readline().strip()
         count_ingridient = int(count_line)
         print('count_ingridient', count_ingridient)
+        ingridient_lst = []
         while count_ingridient != 0:
-            ingridient_line = f.readline()
-            print(ingridient_line, end='')
+            ingridient_line = f.readline().strip().split(' | ') # Разбил строку на список и удалил ' | '
+            print('ingridient_line', ingridient_line) # отладочный принт
             count_ingridient -= 1
         f.readline()
 
