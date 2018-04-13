@@ -36,9 +36,17 @@ cook_book = {
     ]
 }
 
+# Функция принимает название блюда и кол-во человек
+# Далее читаем файл cook_book.txt.
+# Понять, что значение 1-ой строки line.strip() == dish in dishes --> то мы циклом while c условием count_ingridient != 0
+# считывает средующие n-строки содержащие инфу по ингредиентам и кол-ву, где lst[0] - название игредиента,
+# lst[1] - числовое значение, lst[3] - мера веса.
+# Далее выполнить условие, если этого ингредиента нет в словаре shop_list, то добавить его.
+# Если этот мнгредиент есть, то добавить значение второго элемента ( lst[1]) к имеющему значению new_shop_list_item['quantity']
+#
 
-def get_shop_list_by_dishes(dishes, person_count):
-    shop_list = {}
+# def get_shop_list_by_dishes(dishes, person_count):
+    #
     # for dish in dishes:
     #     for ingridient in cook_book[dish]:
     #         new_shop_list_item = dict(ingridient)
@@ -55,12 +63,29 @@ with open('cook_book.txt') as f:
         count_line = f.readline().strip()
         count_ingridient = int(count_line)
         print('count_ingridient', count_ingridient)
-        ingridient_lst = []
+        new_shop_list_item = {}
+        person_count = 2
+        # Временно задали переменную person_count, которую получаем в качестве атрибута функции get_shop_list_by_dishes
+        shop_list = {}
         while count_ingridient != 0:
-            ingridient_line = f.readline().strip().split(' | ') # Разбил строку на список и удалил ' | '
-            print('ingridient_line', ingridient_line) # отладочный принт
+            ingridient_line = f.readline().strip().split(' | ')  # Разбил строку на список и удалил ' | '
+            # print('ingridient_line[0]', ingridient_line[0])  # отладочный принт
+            # print('ingridient_line[1]', ingridient_line[1])  # отладочный принт
+            # print('ingridient_line[2]', ingridient_line[2])  # отладочный принт
             count_ingridient -= 1
+            if ingridient_line[0] not in new_shop_list_item:
+                new_shop_list_item['ingridient_name'] = ingridient_line[0]
+                # Присвоил знач ключ "ingridient_name" словаря new_shop_list_item
+                new_shop_list_item['quantity'] = int(ingridient_line[1]) * person_count
+                # Присвоили знач ключу "quantity" словаря new_shop_list_item
+                new_shop_list_item['measure'] = ingridient_line[2]
+                # Присвоили знач ключу "measure" словаря new_shop_list_item
+                # print('Добавляем впервые в словарь new_shop_list_item', new_shop_list_item)
+            else:
+                new_shop_list_item['quantity'] += int(ingridient_line[1]) * person_count
+                # print('Ингредиент уже есть в словаре new_shop_list_item', new_shop_list_item)
         f.readline()
+    print('new_shop_list_item TOTAL:', new_shop_list_item)
 
 
 
@@ -82,9 +107,7 @@ def print_shop_list(shop_list):
 
 def create_shop_list():
     person_count = int(input('Введите колличество человек: ', ))
-
-    dishes = input('Введите блюда в расчете на одного человека через запятую, без пробеллов: ', ).lower().split(
-        ',')  # .lower() - приводит все строки с нижнему регистру / .split(',') - убирает разделитель между введенными данными и переводит все в список;
+    dishes = input('Введите блюда в расчете на одного человека через запятую, без пробеллов: ', ).lower().split(',')  # lower() - приводит все строки с нижнему регистру / split(',') - убирает разделитель между введенными данными и переводит все в список;
     shop_list = get_shop_list_by_dishes(dishes, person_count)
     print_shop_list(shop_list)
 
