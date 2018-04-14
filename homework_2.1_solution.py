@@ -59,42 +59,35 @@ cook_book = {
     #
     # return (shop_list)
 
-shop_list = {}
-with open('cook_book.txt') as f:
-    for line in f:
-        dish = line.strip()
-        count_line = f.readline().strip()
-        count_ingridient = int(count_line)
-        print('count_ingridient', count_ingridient)
-        person_count = 2
-        # Временно задали переменную person_count, которую получаем в качестве атрибута функции get_shop_list_by_dishes
-        while count_ingridient != 0:
-            new_shop_list_item = {}
-            ingridient_line = f.readline().strip().split(' | ')  # Разбил строку на список и удалил ' | '
-            # print('ingridient_line[0]', ingridient_line[0])  # отладочный принт
-            # print('ingridient_line[1]', ingridient_line[1])  # отладочный принт
-            # print('ingridient_line[2]', ingridient_line[2])  # отладочный принт
-            count_ingridient -= 1
-            if ingridient_line[0] not in new_shop_list_item:
-                new_shop_list_item['ingridient_name'] = ingridient_line[0]
-                # Присвоил знач ключ "ingridient_name" словаря new_shop_list_item
-                new_shop_list_item['quantity'] = int(ingridient_line[1]) * person_count
-                # Присвоили знач ключу "quantity" словаря new_shop_list_item
-                new_shop_list_item['measure'] = ingridient_line[2]
-                # Присвоили знач ключу "measure" словаря new_shop_list_item
-                # print('Добавляем впервые в словарь new_shop_list_item', new_shop_list_item)
-                shop_list[ingridient_line[0]] = new_shop_list_item
-            else:
-                shop_list[ingridient_line[0]]['quantity'] += int(ingridient_line[1]) * person_count
-
-        f.readline()
-    # print('new_shop_list_item TOTAL:', new_shop_list_item)
-    print('shop_list', shop_list)
 
 
 
+def get_shop_list_by_dishes(dishes, person_count):
+    shop_list = {}
+    with open('cook_book.txt') as f:
+        for line in f:
+            dish_in_cook_book = line.strip()
+            count_ingridient = int(f.readline().strip())
+            while count_ingridient != 0:
+                new_shop_list_item = {}
+                ingridient_line = f.readline().strip().split(' | ')
+                count_ingridient -= 1
+                for dish in dishes:
+                    if dish == dish_in_cook_book:
+                        if ingridient_line[0] in shop_list:
+                            shop_list[ingridient_line[0]]['quantity'] += int(ingridient_line[1]) * person_count
+                        else:
+                            new_shop_list_item['ingridient_name'] = ingridient_line[0]
+                            new_shop_list_item['quantity'] = int(ingridient_line[1]) * person_count
+                            new_shop_list_item['measure'] = ingridient_line[2]
+                            shop_list[ingridient_line[0]] = new_shop_list_item
+            f.readline()
 
-    # return (shop_list)
+
+    return (shop_list)
+
+
+print('shop_list для последующей обработки:)', get_shop_list_by_dishes(['стейк', 'салат', 'яйчница'], 3))
 
 
 
