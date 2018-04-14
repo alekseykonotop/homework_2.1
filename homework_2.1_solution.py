@@ -1,67 +1,3 @@
-# 1. Проходим по всем строкам файла
-# 2. Первая строка - название блюда
-# 3. Следующая строка - значение 'n' кол-ва строк с ингредиентами этого блюда
-# 3.0 Строку преобразовать в список lst = ['яйцо', '2', 'шт.']
-# --- Первый элемент в строке - название ингредиента 'ingridient_name'
-# --- Второй элемент в строке - колличество 'quantity'
-# --- Третий элемент в строке - единица измерения 'measure'
-# 4. После 'n' строк - пустая строка
-# 5. Возвращаемся на шаг 2
-#
-
-
-
-# with open('cook_book.txt', encoding='utf8') as f:
-#     for line in f:
-#         print(line, end='')
-
-
-cook_book = {
-    'зимний салат': [
-        {'ingridient_name': 'картофель', 'quantity': 100, 'measure': 'гр'},
-        {'ingridient_name': 'колбаса', 'quantity': 100, 'measure': 'гр'},
-        {'ingridient_name': 'майонез', 'quantity': 50, 'measure': 'мл'},
-        {'ingridient_name': 'яйца', 'quantity': 1, 'measure': 'шт'},
-        {'ingridient_name': 'огурцы', 'quantity': 50, 'measure': 'гр'}
-    ],
-    'пюре с говядиной': [
-        {'ingridient_name': 'картофель', 'quantity': 200, 'measure': 'гр'},
-        {'ingridient_name': 'говядина', 'quantity': 200, 'measure': 'гр'},
-        {'ingridient_name': 'масло', 'quantity': 50, 'measure': 'гр'},
-    ],
-    'торт': [
-        {'ingridient_name': 'печенье', 'quantity': 300, 'measure': 'гр'},
-        {'ingridient_name': 'сметана', 'quantity': 300, 'measure': 'мл'},
-        {'ingridient_name': 'сгущенка', 'quantity': 50, 'measure': 'мл'},
-    ]
-}
-
-# Функция принимает название блюда и кол-во человек
-# Далее читаем файл cook_book.txt.
-# Понять, что значение 1-ой строки line.strip() == dish in dishes --> то мы циклом while c условием count_ingridient != 0
-# считывает средующие n-строки содержащие инфу по ингредиентам и кол-ву, где lst[0] - название игредиента,
-# lst[1] - числовое значение, lst[3] - мера веса.
-# Далее выполнить условие, если этого ингредиента нет в словаре shop_list, то добавить его.
-# Если этот мнгредиент есть, то добавить значение второго элемента ( lst[1]) к имеющему значению new_shop_list_item['quantity']
-#
-
-# def get_shop_list_by_dishes(dishes, person_count):
-    # shop_list = {}
-    # for dish in dishes:
-    #     for ingridient in cook_book[dish]:
-    #         new_shop_list_item = dict(ingridient)
-    #         new_shop_list_item['quantity'] *= person_count
-    #         if new_shop_list_item['ingridient_name'] not in shop_list:
-    #             shop_list[new_shop_list_item['ingridient_name']] = new_shop_list_item
-    #         else:
-    #             shop_list[new_shop_list_item['ingridient_name']]['quantity'] += new_shop_list_item['quantity']
-    # print(shop_list)
-    #
-    # return (shop_list)
-
-
-
-
 def get_shop_list_by_dishes(dishes, person_count):
     shop_list = {}
     with open('cook_book.txt') as f:
@@ -82,21 +18,10 @@ def get_shop_list_by_dishes(dishes, person_count):
                             new_shop_list_item['measure'] = ingridient_line[2]
                             shop_list[ingridient_line[0]] = new_shop_list_item
             f.readline()
-
-
     return (shop_list)
 
 
-print('shop_list для последующей обработки:)', get_shop_list_by_dishes(['стейк', 'салат', 'яйчница'], 3))
-
-
-
-
 def print_shop_list(shop_list):
-    # Один из вариантов вывода удобночитаемой информации
-    # for shop_list_item in shop_list.values():
-    #   print('{ingridient_name} {quantity} {measure}'.format(**shop_list_item))
-    # Ниже более простой вариант
     for shop_list_item in shop_list.values():
         print(
             '{} {} {}'.format(shop_list_item['ingridient_name'], shop_list_item['quantity'], shop_list_item['measure']))
@@ -104,9 +29,9 @@ def print_shop_list(shop_list):
 
 def create_shop_list():
     person_count = int(input('Введите колличество человек: ', ))
-    dishes = input('Введите блюда в расчете на одного человека через запятую, без пробеллов: ', ).lower().split(',')  # lower() - приводит все строки с нижнему регистру / split(',') - убирает разделитель между введенными данными и переводит все в список;
+    dishes = input('Введите блюда в расчете на одного человека через запятую, без пробеллов: ', ).lower().split(',')
     shop_list = get_shop_list_by_dishes(dishes, person_count)
     print_shop_list(shop_list)
 
 
-# create_shop_list()
+create_shop_list()
