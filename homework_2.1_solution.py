@@ -46,7 +46,7 @@ cook_book = {
 #
 
 # def get_shop_list_by_dishes(dishes, person_count):
-    #
+    # shop_list = {}
     # for dish in dishes:
     #     for ingridient in cook_book[dish]:
     #         new_shop_list_item = dict(ingridient)
@@ -56,18 +56,20 @@ cook_book = {
     #         else:
     #             shop_list[new_shop_list_item['ingridient_name']]['quantity'] += new_shop_list_item['quantity']
     # print(shop_list)
+    #
+    # return (shop_list)
 
+shop_list = {}
 with open('cook_book.txt') as f:
     for line in f:
         dish = line.strip()
         count_line = f.readline().strip()
         count_ingridient = int(count_line)
         print('count_ingridient', count_ingridient)
-        new_shop_list_item = {}
         person_count = 2
         # Временно задали переменную person_count, которую получаем в качестве атрибута функции get_shop_list_by_dishes
-        shop_list = {}
         while count_ingridient != 0:
+            new_shop_list_item = {}
             ingridient_line = f.readline().strip().split(' | ')  # Разбил строку на список и удалил ' | '
             # print('ingridient_line[0]', ingridient_line[0])  # отладочный принт
             # print('ingridient_line[1]', ingridient_line[1])  # отладочный принт
@@ -81,11 +83,13 @@ with open('cook_book.txt') as f:
                 new_shop_list_item['measure'] = ingridient_line[2]
                 # Присвоили знач ключу "measure" словаря new_shop_list_item
                 # print('Добавляем впервые в словарь new_shop_list_item', new_shop_list_item)
+                shop_list[ingridient_line[0]] = new_shop_list_item
             else:
-                new_shop_list_item['quantity'] += int(ingridient_line[1]) * person_count
-                # print('Ингредиент уже есть в словаре new_shop_list_item', new_shop_list_item)
+                shop_list[ingridient_line[0]]['quantity'] += int(ingridient_line[1]) * person_count
+
         f.readline()
-    print('new_shop_list_item TOTAL:', new_shop_list_item)
+    # print('new_shop_list_item TOTAL:', new_shop_list_item)
+    print('shop_list', shop_list)
 
 
 
